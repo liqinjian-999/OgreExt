@@ -215,6 +215,7 @@ namespace Ogre {
         String savedName = mat->mName;
         String savedGroup = mat->mGroup;
 		ManualResourceLoader* savedLoader = mat->mLoader;
+        ResourceManager* saveCreator = mat->mCreator;
 		bool savedManual = mat->mIsManual;
         // Assign values from this
         *mat = *this;
@@ -224,7 +225,7 @@ namespace Ogre {
         mat->mGroup = savedGroup;
 		mat->mIsManual = savedManual;
 		mat->mLoader = savedLoader;
-
+        mat->mCreator = saveCreator;
     }
     //-----------------------------------------------------------------------
     void Material::applyDefaults(void)
@@ -238,6 +239,7 @@ namespace Ogre {
             String savedGroup = mGroup;
             ResourceHandle savedHandle = mHandle;
 			ManualResourceLoader *savedLoader = mLoader;
+            ResourceManager* saveCreator = mCreator;
 			bool savedManual = mIsManual;
 			*this = *defaults;
             // restore name & handle
@@ -246,6 +248,7 @@ namespace Ogre {
             mGroup = savedGroup;
 			mLoader = savedLoader;
 			mIsManual = savedManual;
+            mCreator = saveCreator;
 		}
         mCompilationRequired = true;
 

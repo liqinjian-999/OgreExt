@@ -32,6 +32,7 @@ THE SOFTWARE.
 #include "OgreCommon.h"
 #include "OgreColourValue.h"
 #include "OgreFrustum.h"
+#include "OgreRectangle2D.h"
 
 namespace Ogre {
 	/** \addtogroup Core
@@ -361,6 +362,13 @@ namespace Ogre {
         void pointOrientedToScreen(Real orientedX, Real orientedY, int orientationMode,
                                    Real &screenX, Real &screenY);
 
+        /** Get a textured fullscreen 2D rectangle, for internal use.
+        */
+        Renderable *_getTexturedRectangle2D();
+
+        void setToolViewPort(bool bToolViewPort);
+
+        bool isToolViewPort();
     protected:
         Camera* mCamera;
         RenderTarget* mTarget;
@@ -390,6 +398,10 @@ namespace Ogre {
 
 		/// Automatic rendering on/off
 		bool mIsAutoUpdated;
+
+        Rectangle2D *mRectangle;
+
+        bool mToolViewPort;
     };
 	/** @} */
 	/** @} */

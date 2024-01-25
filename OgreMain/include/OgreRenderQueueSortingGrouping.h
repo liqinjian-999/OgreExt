@@ -145,7 +145,7 @@ namespace Ogre {
                 if (hasha == hashb)
                 {
                     // Must differentTransparentQueueItemLessiate by pointer incase 2 passes end up with the same hash
-                    return a < b;
+                    return a->getPassID() < b->getPassID();
                 }
                 else
                 {

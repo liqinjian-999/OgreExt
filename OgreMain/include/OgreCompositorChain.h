@@ -215,6 +215,7 @@ namespace Ogre {
 		RQListener mOurListener;
 		/// Old viewport settings
 		unsigned int mOldClearEveryFrameBuffers;
+        bool mOldClearEveryFrame;
 		/// Store old scene visibility mask
 		uint32 mOldVisibilityMask;
 		/// Store old find visible objects

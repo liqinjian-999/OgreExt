@@ -42,7 +42,7 @@ namespace Ogre {
 
 		virtual void getCustomAttribute( const String& name, void *pData );
 
-		bool requiresTextureFlipping() const { return true; }
+		bool requiresTextureFlipping() const { return false; }   // modified by ZhuJL
 	private:
 		virtual void bindSurfaceImpl(size_t attachment, RenderTexture *target);
 		virtual void unbindSurfaceImpl(size_t attachment); 

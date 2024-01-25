@@ -97,6 +97,8 @@ namespace Ogre {
 			virtual ~HashFunc() {}
 		};
     protected:
+        static unsigned int S_PASSID_COUNTER;
+        unsigned int m_passID;
         Technique* mParent;
         unsigned short mIndex; // pass index
         String mName; // optional name for the pass
@@ -274,7 +276,7 @@ namespace Ogre {
         /// Returns true if this pass uses a shadow receiver fragment program
         bool hasShadowReceiverFragmentProgram(void) const { return mShadowReceiverFragmentProgramUsage != NULL; }
 
-
+        unsigned int getPassID() const {return m_passID;}
         /// Gets the index of this Pass in the parent Technique
         unsigned short getIndex(void) const { return mIndex; }
         /* Set the name of the pass

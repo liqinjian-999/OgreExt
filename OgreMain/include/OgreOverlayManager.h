@@ -120,6 +120,8 @@ namespace Ogre {
         void destroy(Overlay* overlay);
         /** Destroys all existing overlays */
         void destroyAll(void);
+        /** remove the recording that some scripted has been loaded , so we can parse the scirpt again when quit mulitple views and enter again**/
+        void removeLoadedScriptRecord(const String& name);
         typedef MapIterator<OverlayMap> OverlayMapIterator;
         OverlayMapIterator getOverlayIterator(void);
 

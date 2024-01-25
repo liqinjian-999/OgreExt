@@ -93,7 +93,18 @@ namespace Ogre
 		/// Invert the bits of the stencil buffer
 		SOP_INVERT
 	};
-
+	
+	
+	// modified by ZhuJL
+	enum LineStyle
+	{
+		LS_SOLID,
+		LS_DOT,
+		LS_SHORT_DASH,
+		LS_LONG_DASH,
+		LS_DOT_DASH,
+		LS_ODD_DASH
+	};
 
 	/** Defines the functionality of a 3D API
 	@remarks
@@ -1441,6 +1452,11 @@ namespace Ogre
 
 
 
+		// modified by ZhuJL
+	public:
+		virtual void setLineWidth(float width) const {}
+		virtual void setLineStyle(const LineStyle &style) const {}
+		virtual void setDoubleSidedLighting(bool enabled) {}
 	};
 	/** @} */
 	/** @} */

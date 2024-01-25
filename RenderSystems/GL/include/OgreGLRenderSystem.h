@@ -327,11 +327,11 @@ namespace Ogre {
         /** See
           RenderSystem
          */
-        void _beginFrame(void);
+        virtual void _beginFrame(void);
         /** See
           RenderSystem
          */
-        void _endFrame(void);
+        virtual void _endFrame(void);
         /** See
           RenderSystem
          */

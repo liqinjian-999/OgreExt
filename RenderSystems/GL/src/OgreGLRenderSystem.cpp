@@ -1046,6 +1046,7 @@ namespace Ogre {
 		return win;
 	}
 
+
 	void GLRenderSystem::initialiseContext(RenderWindow* primary)
 	{
 		// Set main and current context
@@ -1068,6 +1069,7 @@ namespace Ogre {
 #if OGRE_THREAD_SUPPORT != 1
 		glewContextInit(mGLSupport);
 #endif
+
 	}
 
 
@@ -1941,6 +1943,7 @@ namespace Ogre {
 		// outside via the resource manager
 		unbindGpuProgram(GPT_VERTEX_PROGRAM);
 		unbindGpuProgram(GPT_FRAGMENT_PROGRAM);
+        unbindGpuProgram(GPT_GEOMETRY_PROGRAM);
 	}
 
 	//-----------------------------------------------------------------------------
@@ -3485,7 +3488,7 @@ GL_RGB_SCALE : GL_ALPHA_SCALE, 1);
 			// Change the context to something else so that a valid context
 			// remains active. When this is the main context being unregistered,
 			// we set the main context to 0.
-			if(mCurrentContext != mMainContext) {
+			if(NULL != mMainContext && mCurrentContext != mMainContext) {
 				_switchContext(mMainContext);
 			} else {
 				/// No contexts remain

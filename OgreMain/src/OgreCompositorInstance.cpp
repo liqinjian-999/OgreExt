@@ -203,7 +203,7 @@ public:
 		instance->_fireNotifyMaterialRender(pass_id, mat);
 
         Viewport* vp = rs->_getViewport();
-		Rectangle2D *rect = static_cast<Rectangle2D*>(CompositorManager::getSingleton()._getTexturedRectangle2D());
+        Rectangle2D *rect = static_cast<Rectangle2D*>(vp->_getTexturedRectangle2D());
 
 		if (mQuadCornerModified)
 		{

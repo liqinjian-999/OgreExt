@@ -52,7 +52,7 @@ namespace Ogre {
         GLRenderTexture(const String &name, const GLSurfaceDesc &target, bool writeGamma, uint fsaa);
         virtual ~GLRenderTexture();
         
-        bool requiresTextureFlipping() const { return true; }
+        bool requiresTextureFlipping() const { return false; }  // modified by ZhuJL
     };
     
     /** Manager/factory for RenderTextures.

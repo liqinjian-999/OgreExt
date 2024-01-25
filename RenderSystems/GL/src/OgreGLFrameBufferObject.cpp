@@ -265,6 +265,11 @@ namespace Ogre {
         /// Bind main buffer
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
         
+        if (GL_FRAMEBUFFER_COMPLETE_EXT != status)
+        {
+            std::cout << "Error Found." << std::endl;
+        }
+
         switch(status)
         {
         case GL_FRAMEBUFFER_COMPLETE_EXT:

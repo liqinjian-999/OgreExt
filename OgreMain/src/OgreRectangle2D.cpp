@@ -37,7 +37,7 @@ namespace Ogre {
 #define NORMAL_BINDING 1
 #define TEXCOORD_BINDING 2
 
-	Rectangle2D::Rectangle2D(bool includeTextureCoords, Ogre::HardwareBuffer::Usage vBufUsage) 
+	Rectangle2D::Rectangle2D(bool includeTextureCoords, Ogre::HardwareBuffer::Usage vBufUsage, bool textureFlipping)    // modified by ZhuJL
     {
         // use identity projection and view matrices
         mUseIdentityProjection = true;
@@ -112,14 +112,28 @@ namespace Ogre {
             // Set up basic tex coordinates
             float* pTex = static_cast<float*>(
                 tvbuf->lock(HardwareBuffer::HBL_DISCARD));
-            *pTex++ = 0.0f;
-            *pTex++ = 0.0f;
-            *pTex++ = 0.0f;
-            *pTex++ = 1.0f;
-            *pTex++ = 1.0f;
-            *pTex++ = 0.0f;
-            *pTex++ = 1.0f;
-            *pTex++ = 1.0f;
+            if (!textureFlipping)   // modified by ZhuJL
+            {
+                *pTex++ = 0.0f;
+                *pTex++ = 0.0f;
+                *pTex++ = 0.0f;
+                *pTex++ = 1.0f;
+                *pTex++ = 1.0f;
+                *pTex++ = 0.0f;
+                *pTex++ = 1.0f;
+                *pTex++ = 1.0f;
+            }
+            else
+            {
+                *pTex++ = 0.0f;
+                *pTex++ = 1.0f;
+                *pTex++ = 0.0f;
+                *pTex++ = 0.0f;
+                *pTex++ = 1.0f;
+                *pTex++ = 1.0f;
+                *pTex++ = 1.0f;
+                *pTex++ = 0.0f;
+            }
             tvbuf->unlock();
         }
 

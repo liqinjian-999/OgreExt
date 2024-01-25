@@ -129,9 +129,10 @@ namespace Ogre {
         */
         struct RBFormat
         {
-            RBFormat(GLenum inFormat, size_t inWidth, size_t inHeight, uint fsaa):
-                format(inFormat), width(inWidth), height(inHeight), samples(fsaa)
+            RBFormat(HGLRC inGLContext, GLenum inFormat, size_t inWidth, size_t inHeight, uint fsaa):
+                glContext(inGLContext),format(inFormat), width(inWidth), height(inHeight), samples(fsaa)
             {}
+            HGLRC  glContext;
             GLenum format;
             size_t width;
             size_t height;
@@ -139,25 +140,32 @@ namespace Ogre {
             // Overloaded comparison operator for usage in map
             bool operator < (const RBFormat &other) const
             {
-                if(format < other.format)
+                if (glContext < other.glContext)
                 {
                     return true;
                 }
-                else if(format == other.format)
+                else if (glContext == other.glContext)
                 {
-                    if(width < other.width)
+                    if (format < other.format)
                     {
                         return true;
                     }
-                    else if(width == other.width)
+                    else if (format == other.format)
                     {
-                        if(height < other.height)
+                        if (width < other.width)
+                        {
                             return true;
-						else if (height == other.height)
-						{
-							if (samples < other.samples)
-								return true;
-						}
+                        }
+                        else if (width == other.width)
+                        {
+                            if (height < other.height)
+                                return true;
+                            else if (height == other.height)
+                            {
+                                if (samples < other.samples)
+                                    return true;
+                            }
+                        }
                     }
                 }
                 return false;

@@ -94,8 +94,10 @@ namespace Ogre {
     //-----------------------------------------------------------------------------
 	Pass::PassSet Pass::msDirtyHashList;
     Pass::PassSet Pass::msPassGraveyard;
-	OGRE_STATIC_MUTEX_INSTANCE(Pass::msDirtyHashListMutex)
-	OGRE_STATIC_MUTEX_INSTANCE(Pass::msPassGraveyardMutex)
+    OGRE_STATIC_MUTEX_INSTANCE(Pass::msDirtyHashListMutex)
+    OGRE_STATIC_MUTEX_INSTANCE(Pass::msPassGraveyardMutex)
+
+    unsigned int    Pass::S_PASSID_COUNTER = 0;
 
 	Pass::HashFunc* Pass::msHashFunc = &sMinTextureStateChangeHashFunc;
 	//-----------------------------------------------------------------------------
@@ -197,6 +199,7 @@ namespace Ogre {
 		, mLightClipPlanes(false)
 		, mIlluminationStage(IS_UNKNOWN)		
     {
+        m_passID = ++S_PASSID_COUNTER;
 		mPointAttenuationCoeffs[0] = 1.0f;
 		mPointAttenuationCoeffs[1] = mPointAttenuationCoeffs[2] = 0.0f;
 
@@ -214,6 +217,7 @@ namespace Ogre {
 		mShadowReceiverFragmentProgramUsage(0), mGeometryProgramUsage(0),
 		mQueuedForDeletion(false), mPassIterationCount(1)
     {
+        m_passID = ++S_PASSID_COUNTER;
         *this = oth;
         mParent = parent;
         mIndex = index;

@@ -51,7 +51,7 @@ namespace Ogre {
         void unlockImpl(void);
     public:
         GLHardwareIndexBuffer(HardwareBufferManagerBase* mgr, IndexType idxType, size_t numIndexes, 
-            HardwareBuffer::Usage usage, bool useShadowBuffer); 
+            HardwareBuffer::Usage usage, bool useShadowBuffer);
         ~GLHardwareIndexBuffer();
         /** See HardwareBuffer. */
         void readData(size_t offset, size_t length, void* pDest);

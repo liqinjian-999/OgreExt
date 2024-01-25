@@ -448,7 +448,8 @@ static const size_t depthBits[] =
         retval.buffer = 0; // Return 0 buffer if GL_NONE is requested
         if(format != GL_NONE)
         {
-            RBFormat key(format, width, height, fsaa);
+            HGLRC hrc = wglGetCurrentContext();
+            RBFormat key(hrc,format, width, height, fsaa);
             RenderBufferMap::iterator it = mRenderBufferMap.find(key);
             if(it != mRenderBufferMap.end())
             {
@@ -476,7 +477,7 @@ static const size_t depthBits[] =
     {
         if(surface.buffer == 0)
             return;
-        RBFormat key(surface.buffer->getGLFormat(), surface.buffer->getWidth(), surface.buffer->getHeight(), surface.numSamples);
+        RBFormat key(wglGetCurrentContext(), surface.buffer->getGLFormat(), surface.buffer->getWidth(), surface.buffer->getHeight(), surface.numSamples);
         RenderBufferMap::iterator it = mRenderBufferMap.find(key);
         assert(it != mRenderBufferMap.end());
         if (it != mRenderBufferMap.end())   // Just in case
@@ -491,7 +492,7 @@ static const size_t depthBits[] =
     {
         if(surface.buffer == 0)
             return;
-        RBFormat key(surface.buffer->getGLFormat(), surface.buffer->getWidth(), surface.buffer->getHeight(), surface.numSamples);
+        RBFormat key(wglGetCurrentContext(), surface.buffer->getGLFormat(), surface.buffer->getWidth(), surface.buffer->getHeight(), surface.numSamples);
         RenderBufferMap::iterator it = mRenderBufferMap.find(key);
         if(it != mRenderBufferMap.end())
 		{

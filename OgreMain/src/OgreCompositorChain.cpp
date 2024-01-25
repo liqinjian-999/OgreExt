@@ -48,6 +48,7 @@ CompositorChain::CompositorChain(Viewport *vp):
 	mAnyCompositorsEnabled(false)
 {
 	mOldClearEveryFrameBuffers = mViewport->getClearBuffers();
+    mOldClearEveryFrame = mViewport->getClearEveryFrame();
     assert(mViewport);
 }
 //-----------------------------------------------------------------------
@@ -412,13 +413,14 @@ void CompositorChain::_compile()
 		{
 			// Save old viewport clearing options
 			mOldClearEveryFrameBuffers = mViewport->getClearBuffers();
+            mOldClearEveryFrame = mViewport->getClearEveryFrame();
 			// Don't clear anything every frame since we have our own clear ops
 			mViewport->setClearEveryFrame(false);
 		}
 		else
 		{
 			// Reset clearing options
-			mViewport->setClearEveryFrame(mOldClearEveryFrameBuffers > 0, 
+			mViewport->setClearEveryFrame(mOldClearEveryFrame, 
 				mOldClearEveryFrameBuffers);
 		}
 	}

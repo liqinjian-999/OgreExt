@@ -547,6 +547,6 @@ namespace Ogre {
     	    swapBuffers(Root::getSingleton().getRenderSystem()->getWaitForVerticalBlank());
 		}
     }
-	
+
 
 }        

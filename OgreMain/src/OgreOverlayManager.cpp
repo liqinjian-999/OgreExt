@@ -138,6 +138,7 @@ namespace Ogre {
             mOverlayMap.erase(i);
         }
     }
+
     //---------------------------------------------------------------------
     void OverlayManager::destroy(Overlay* overlay)
     {
@@ -167,6 +168,13 @@ namespace Ogre {
         mOverlayMap.clear();
 		mLoadedScripts.clear();
     }
+
+    //---------------------------------------------------------------------
+    void  OverlayManager::removeLoadedScriptRecord(const String& name)
+    {
+        mLoadedScripts.erase(name);
+    }
+
     //---------------------------------------------------------------------
     OverlayManager::OverlayMapIterator OverlayManager::getOverlayIterator(void)
     {

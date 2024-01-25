@@ -52,7 +52,7 @@ namespace Ogre {
         void unlockImpl(void);
     public:
         GLHardwareVertexBuffer(HardwareBufferManagerBase* mgr, size_t vertexSize, size_t numVertices, 
-            HardwareBuffer::Usage usage, bool useShadowBuffer); 
+            HardwareBuffer::Usage usage, bool useShadowBuffer);
         ~GLHardwareVertexBuffer();
         /** See HardwareBuffer. */
         void readData(size_t offset, size_t length, void* pDest);

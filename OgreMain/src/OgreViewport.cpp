@@ -60,6 +60,8 @@ namespace Ogre {
 		, mRQSequence(0)
 		, mMaterialSchemeName(MaterialManager::DEFAULT_SCHEME_NAME)
 		, mIsAutoUpdated(true)
+        , mRectangle(0)
+        , mToolViewPort(false)
     {
 #if OGRE_COMPILER != OGRE_COMPILER_GCCE
 		LogManager::getSingleton().stream(LML_TRIVIAL)
@@ -82,7 +84,7 @@ namespace Ogre {
     //---------------------------------------------------------------------
     Viewport::~Viewport()
     {
-
+        OGRE_DELETE mRectangle;
     }
     //---------------------------------------------------------------------
     bool Viewport::_isUpdated(void) const
@@ -433,6 +435,31 @@ namespace Ogre {
             screenY = orY;
             break;
         }
+    }
+
+    Renderable *Viewport::_getTexturedRectangle2D()
+    {
+        if (!mRectangle)
+        {
+            /// 2D rectangle, to use for render_quad passes
+            mRectangle = OGRE_NEW Rectangle2D(true, HardwareBuffer::HBU_DYNAMIC_WRITE_ONLY_DISCARDABLE, true);  // modified by ZhuJL
+        }
+        RenderSystem* rs = Root::getSingleton().getRenderSystem();
+        Viewport* vp = rs->_getViewport();
+        Real hOffset = rs->getHorizontalTexelOffset() / (0.5f * vp->getActualWidth());
+        Real vOffset = rs->getVerticalTexelOffset() / (0.5f * vp->getActualHeight());
+        mRectangle->setCorners(-1 + hOffset, 1 - vOffset, 1 + hOffset, -1 - vOffset);
+        return mRectangle;
+    }
+
+    void Viewport::setToolViewPort(bool bToolViewPort)
+    {
+        mToolViewPort = bToolViewPort;
+    }
+
+    bool Viewport::isToolViewPort()
+    {
+        return mToolViewPort;
     }
 	//-----------------------------------------------------------------------
 }
