@@ -1456,7 +1456,10 @@ namespace Ogre
 	public:
 		virtual void setLineWidth(float width) const {}
 		virtual void setLineStyle(const LineStyle &style) const {}
-		virtual void setDoubleSidedLighting(bool enabled) {}
+		//////////////////////////////////////////////////////////////////////////
+
+    virtual void setBackFaceLighting(const bool enabled){};
+    virtual void setLocalSpaceLighting(const bool enabled){};
 	};
 	/** @} */
 	/** @} */

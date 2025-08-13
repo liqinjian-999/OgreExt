@@ -351,7 +351,7 @@ namespace Ogre
 		@param name Optional name, just helps to identify logging output
 		*/
 		DefaultWorkQueueBase(const String& name = StringUtil::BLANK);
-		virtual ~DefaultWorkQueueBase();
+		virtual ~DefaultWorkQueueBase() noexcept;
 		/// Get the name of the work queue
 		const String& getName() const;
 		/** Get the number of worker threads that this queue will start when 
@@ -459,11 +459,11 @@ namespace Ogre
 			WorkerFunc(DefaultWorkQueueBase* q) 
 				: mQueue(q) {}
 
-			void operator()();
+			void operator()() const;
 
 			void run();
 		};
-		WorkerFunc* mWorkerFunc;
+		const Ogre::DefaultWorkQueueBase::WorkerFunc* mWorkerFunc;
 
 		/** Intermediate structure to hold a pointer to a request handler which 
 			provides insurance against the handler itself being disconnected

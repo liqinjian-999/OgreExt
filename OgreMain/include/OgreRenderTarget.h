@@ -85,6 +85,8 @@ namespace Ogre {
             unsigned long worstFrameTime;
             size_t triangleCount;
             size_t batchCount;
+            
+            unsigned long lastFrameTime;
         };
 
 		enum FrameBuffer

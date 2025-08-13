@@ -607,7 +607,7 @@ namespace Ogre {
 	}
 	//---------------------------------------------------------------------
 
-	void DefaultWorkQueueBase::WorkerFunc::operator()()
+	void DefaultWorkQueueBase::WorkerFunc::operator()() const
 	{
 		mQueue->_threadMain();
 	}
