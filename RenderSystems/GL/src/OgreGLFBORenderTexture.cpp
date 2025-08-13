@@ -34,6 +34,16 @@ THE SOFTWARE.
 #include "OgreGLHardwarePixelBuffer.h"
 #include "OgreGLFBOMultiRenderTarget.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#define GET_CURRENT_CONTEXT() wglGetCurrentContext()
+#elif defined(__linux__)
+#include <GL/glx.h>
+#define GET_CURRENT_CONTEXT() glXGetCurrentContext()
+#else
+#define GET_CURRENT_CONTEXT() nullptr 
+#endif
+
 namespace Ogre {
 
 //-----------------------------------------------------------------------------    
@@ -448,7 +458,7 @@ static const size_t depthBits[] =
         retval.buffer = 0; // Return 0 buffer if GL_NONE is requested
         if(format != GL_NONE)
         {
-            HGLRC hrc = wglGetCurrentContext();
+            GLContextType hrc = GET_CURRENT_CONTEXT();
             RBFormat key(hrc,format, width, height, fsaa);
             RenderBufferMap::iterator it = mRenderBufferMap.find(key);
             if(it != mRenderBufferMap.end())
@@ -477,7 +487,7 @@ static const size_t depthBits[] =
     {
         if(surface.buffer == 0)
             return;
-        RBFormat key(wglGetCurrentContext(), surface.buffer->getGLFormat(), surface.buffer->getWidth(), surface.buffer->getHeight(), surface.numSamples);
+        RBFormat key(GET_CURRENT_CONTEXT(), surface.buffer->getGLFormat(), surface.buffer->getWidth(), surface.buffer->getHeight(), surface.numSamples);
         RenderBufferMap::iterator it = mRenderBufferMap.find(key);
         assert(it != mRenderBufferMap.end());
         if (it != mRenderBufferMap.end())   // Just in case
@@ -492,7 +502,7 @@ static const size_t depthBits[] =
     {
         if(surface.buffer == 0)
             return;
-        RBFormat key(wglGetCurrentContext(), surface.buffer->getGLFormat(), surface.buffer->getWidth(), surface.buffer->getHeight(), surface.numSamples);
+        RBFormat key(GET_CURRENT_CONTEXT(), surface.buffer->getGLFormat(), surface.buffer->getWidth(), surface.buffer->getHeight(), surface.numSamples);
         RenderBufferMap::iterator it = mRenderBufferMap.find(key);
         if(it != mRenderBufferMap.end())
 		{

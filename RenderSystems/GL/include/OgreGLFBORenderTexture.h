@@ -35,6 +35,12 @@ THE SOFTWARE.
 /// Extra GL constants
 #define GL_DEPTH24_STENCIL8_EXT                           0x88F0
 
+#ifdef _WIN32
+typedef HGLRC GLContextType; 
+#else
+typedef void* GLContextType; 
+#endif
+
 
 namespace Ogre {
     class GLFBOManager;
@@ -129,10 +135,10 @@ namespace Ogre {
         */
         struct RBFormat
         {
-            RBFormat(HGLRC inGLContext, GLenum inFormat, size_t inWidth, size_t inHeight, uint fsaa):
+            RBFormat(GLContextType inGLContext, GLenum inFormat, size_t inWidth, size_t inHeight, uint fsaa):
                 glContext(inGLContext),format(inFormat), width(inWidth), height(inHeight), samples(fsaa)
             {}
-            HGLRC  glContext;
+            GLContextType  glContext;
             GLenum format;
             size_t width;
             size_t height;

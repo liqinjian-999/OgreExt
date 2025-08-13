@@ -185,9 +185,9 @@ private:
 	enum PhaseType {ptPHASE1TEX, ptPHASE1ALU, ptPHASE2TEX, ptPHASE2ALU };
 
 	struct RegModOffset {
-		uint MacroOffset;
-		uint RegisterBase;
-		uint OpParramsIndex;
+		int MacroOffset;
+		int RegisterBase;
+		int OpParramsIndex;
 	};
 
 	struct MacroRegModify {
