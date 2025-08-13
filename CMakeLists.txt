@@ -46,6 +46,117 @@ endif ()
 
 project(OGRE)
 
+# ----------- X11 修正逻辑开始 -----------
+if(CMAKE_HOST_UNIX)
+    find_package(X11)
+    message(STATUS "[CMake X11 Debug] X11_FOUND=${X11_FOUND}")
+    message(STATUS "[CMake X11 Debug] X11_INCLUDE_DIR=${X11_INCLUDE_DIR}")
+    message(STATUS "[CMake X11 Debug] X11_LIBRARIES=${X11_LIBRARIES}")
+    message(STATUS "[CMake X11 Debug] X11_X11_LIB=${X11_X11_LIB}")
+
+    if(X11_FOUND AND X11_INCLUDE_DIR STREQUAL "/usr/bin")
+        message(STATUS "[CMake X11] Detected broken FindX11.cmake setting X11_INCLUDE_DIR to /usr/bin, fixing manually")
+        if(EXISTS "/usr/include/X11/Xlib.h")
+            set(X11_INCLUDE_DIR "/usr/include")
+            message(STATUS "[CMake X11] Fixed X11_INCLUDE_DIR to: ${X11_INCLUDE_DIR}")
+        elseif(EXISTS "/usr/X11R6/include/X11/Xlib.h")
+            set(X11_INCLUDE_DIR "/usr/X11R6/include")
+            message(STATUS "[CMake X11] Fixed X11_INCLUDE_DIR to: ${X11_INCLUDE_DIR}")
+        endif()
+    endif()
+
+    set(X11_VALID FALSE)
+    if(X11_FOUND)
+        if(X11_INCLUDE_DIR AND 
+           NOT X11_INCLUDE_DIR STREQUAL "/usr/bin" AND 
+           EXISTS "${X11_INCLUDE_DIR}/X11/Xlib.h")
+            set(X11_VALID TRUE)
+            message(STATUS "[CMake X11] X11 found successfully, X11_INCLUDE_DIR=${X11_INCLUDE_DIR}")
+        else()
+            message(WARNING "[CMake X11] X11_FOUND=TRUE but X11_INCLUDE_DIR is invalid: ${X11_INCLUDE_DIR}")
+            if(X11_INCLUDE_DIR AND NOT EXISTS "${X11_INCLUDE_DIR}/X11/Xlib.h")
+                message(WARNING "[CMake X11] X11/Xlib.h not found in ${X11_INCLUDE_DIR}")
+            endif()
+        endif()
+    else()
+        message(WARNING "[CMake X11] find_package(X11) failed: X11_FOUND=FALSE")
+    endif()
+
+    if(X11_VALID)
+        message(STATUS "[CMake X11] Using found X11: ${X11_INCLUDE_DIR}")
+        add_library(x11 INTERFACE)
+        target_include_directories(x11 INTERFACE ${X11_INCLUDE_DIR})
+        target_link_libraries(x11 INTERFACE ${X11_LIBRARIES})
+        target_compile_definitions(x11 INTERFACE HAVE_X11)
+    else()
+        message(WARNING "[CMake X11] Using fallback X11 configuration")
+        set(FALLBACK_X11_INCLUDE "/usr/include")
+        set(FALLBACK_X11_LIB "/usr/lib64/libX11.so")
+        if(NOT EXISTS "${FALLBACK_X11_INCLUDE}/X11/Xlib.h")
+            message(WARNING "[CMake X11] Fallback header ${FALLBACK_X11_INCLUDE}/X11/Xlib.h not found")
+            if(EXISTS "/usr/include/X11/Xlib.h")
+                set(FALLBACK_X11_INCLUDE "/usr/include")
+            elseif(EXISTS "/usr/X11R6/include/X11/Xlib.h")
+                set(FALLBACK_X11_INCLUDE "/usr/X11R6/include")
+            endif()
+        endif()
+        if(NOT EXISTS "${FALLBACK_X11_LIB}")
+            message(WARNING "[CMake X11] Fallback library ${FALLBACK_X11_LIB} not found")
+            if(EXISTS "/usr/lib/x86_64-linux-gnu/libX11.so")
+                set(FALLBACK_X11_LIB "/usr/lib/x86_64-linux-gnu/libX11.so")
+            elseif(EXISTS "/usr/lib/libX11.so")
+                set(FALLBACK_X11_LIB "/usr/lib/libX11.so")
+            endif()
+        endif()
+        message(STATUS "[CMake X11] Using fallback: include=${FALLBACK_X11_INCLUDE}, lib=${FALLBACK_X11_LIB}")
+        add_library(x11 INTERFACE)
+        target_include_directories(x11 INTERFACE ${FALLBACK_X11_INCLUDE})
+        target_link_libraries(x11 INTERFACE ${FALLBACK_X11_LIB})
+        target_compile_definitions(x11 INTERFACE HAVE_X11)
+    endif()
+endif()
+# ----------- X11 修正逻辑结束 -----------
+
+# ----------- X11 修正逻辑结束后添加 -----------
+if(X11_VALID)
+    set(X11_X11_INCLUDE_PATH "${X11_INCLUDE_DIR}" CACHE PATH "X11 include path" FORCE)
+    set(X11_Xext_INCLUDE_PATH "${X11_INCLUDE_DIR}" CACHE PATH "X11 Xext include path" FORCE)
+    set(X11_Xlib_INCLUDE_PATH "${X11_INCLUDE_DIR}" CACHE PATH "X11 Xlib include path" FORCE)
+    set(X11_Xt_INCLUDE_PATH "${X11_INCLUDE_DIR}" CACHE PATH "X11 Xt include path" FORCE)
+endif()
+
+# 批量修正所有 X11 相关 include 路径为 /usr/include
+foreach(x11_var
+    X11_ICE_INCLUDE_PATH
+    X11_SM_INCLUDE_PATH
+    X11_X11_INCLUDE_PATH
+    X11_XShm_INCLUDE_PATH
+    X11_XSync_INCLUDE_PATH
+    X11_Xft_INCLUDE_PATH
+    X11_Xkb_INCLUDE_PATH
+    X11_Xkblib_INCLUDE_PATH
+    X11_Xlib_INCLUDE_PATH
+    X11_Xmu_INCLUDE_PATH
+    X11_Xpm_INCLUDE_PATH
+    X11_Xrandr_INCLUDE_PATH
+    X11_Xrender_INCLUDE_PATH
+    X11_Xshape_INCLUDE_PATH
+    X11_Xutil_INCLUDE_PATH
+    X11_Xxf86misc_INCLUDE_PATH
+    X11_dpms_INCLUDE_PATH
+    X11_xcb_INCLUDE_PATH
+    X11_xcb_randr_INCLUDE_PATH
+    X11_xcb_xfixes_INCLUDE_PATH
+    X11_xcb_xtest_INCLUDE_PATH
+)
+    set(${x11_var} "/usr/include" CACHE PATH "Force X11 include path" FORCE)
+endforeach()
+
+set(X11_X11_INCLUDE_PATH "${X11_INCLUDE_DIR}" CACHE PATH "X11 include path" FORCE)
+set(X11_INCLUDE_DIR "${X11_INCLUDE_DIR}" CACHE PATH "X11 include dir" FORCE)
+
+message(STATUS "[CMake X11] X11_X11_INCLUDE_PATH=${X11_X11_INCLUDE_PATH}")
+
 # Include necessary submodules
 set(CMAKE_MODULE_PATH 
   "${OGRE_SOURCE_DIR}/CMake"
